@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:incident_reporter/auth/auth_cubit.dart';
 import 'package:incident_reporter/auth/form_submission_status.dart';
 import 'package:incident_reporter/auth/login/login_event.dart';
 import 'package:incident_reporter/bloc/login_bloc.dart';
@@ -7,7 +8,6 @@ import 'package:incident_reporter/model/login_state.dart';
 import 'package:incident_reporter/repo/auth_repo.dart';
 
 class Login extends StatelessWidget {
-  //const Login({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -15,22 +15,36 @@ class Login extends StatelessWidget {
     return Scaffold(
       body: BlocProvider(
         create: (context) => LoginBloc(
-          authRepo: context.read<AuthRepository>(),
+            authRepo: context.read<AuthRepository>(),
+            authCubit: context.read<AuthCubit>()),
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            _loginForm(),
+            _signupButton(context),
+          ],
         ),
-        child: _loginForm(),
       ),
     );
   }
 
   Widget _loginForm() {
-    return Form(
-      key: _formKey,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [_usernameField(), _passwordField(), loginButton()],
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (context, state) {
+        final formStatus = state.formStatus;
+        if (formStatus is SubmissionFailed) {
+          _showSnackBar(context, formStatus.exception.toString());
+        }
+      },
+      child: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40.0),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [_usernameField(), _passwordField(), loginButton()],
+            ),
           ),
         ),
       ),
@@ -78,5 +92,17 @@ class Login extends StatelessWidget {
               child: Text('Login'),
             );
     });
+  }
+
+  Widget _signupButton(BuildContext context) {
+    return SafeArea(
+        child: TextButton(
+            onPressed: () => context.read<AuthCubit>().showSignUp(),
+            child: Text('Don\'t have an account? Sign up')));
+  }
+
+  void _showSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
