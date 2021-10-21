@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:incident_reporter/auth/auth_cubit.dart';
+import 'package:incident_reporter/cubit/auth_cubit.dart';
 import 'package:incident_reporter/auth/form_submission_status.dart';
 import 'package:incident_reporter/auth/login/login_event.dart';
 import 'package:incident_reporter/bloc/login_bloc.dart';

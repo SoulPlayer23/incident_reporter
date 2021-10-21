@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:incident_reporter/auth/auth_cubit.dart';
+import 'package:incident_reporter/cubit/auth_cubit.dart';
 import 'package:incident_reporter/screens/confirmation_page.dart';
 import 'package:incident_reporter/screens/login_page.dart';
 import 'package:incident_reporter/screens/signup_page.dart';

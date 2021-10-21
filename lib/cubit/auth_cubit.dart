@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:incident_reporter/auth/auth_credentials.dart';
-import 'package:incident_reporter/session_cubit.dart';
+import 'package:incident_reporter/model/auth_credentials.dart';
+import 'package:incident_reporter/cubit/session_cubit.dart';
 
 enum AuthState { login, signUp, confirmSignUp }
 

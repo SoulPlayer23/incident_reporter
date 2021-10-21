@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:incident_reporter/auth/auth_credentials.dart';
+import 'package:incident_reporter/model/auth_credentials.dart';
 import 'package:incident_reporter/model/session_state.dart';
 import 'package:incident_reporter/repo/auth_repo.dart';
 

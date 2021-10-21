@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:incident_reporter/session_cubit.dart';
+import 'package:incident_reporter/cubit/session_cubit.dart';
 
 class Home extends StatelessWidget {
   @override
