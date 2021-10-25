@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:incident_reporter/cubit/session_cubit.dart';
 
 class Home extends StatelessWidget {
+  final User user;
+
+  const Home({Key? key, required this.user}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,11 +12,11 @@ class Home extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Session View'),
+            Text('Hello, ${user.email}'),
             TextButton(
-                onPressed: () =>
-                    BlocProvider.of<SessionCubit>(context).signOut(),
-                child: Text('sign out'))
+              onPressed: () => {},
+              child: Text('Sign Out'),
+            )
           ],
         ),
       ),

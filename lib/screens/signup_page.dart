@@ -1,27 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:incident_reporter/cubit/auth_cubit.dart';
-import 'package:incident_reporter/auth/form_submission_status.dart';
-import 'package:incident_reporter/auth/signup/signup_event.dart';
-import 'package:incident_reporter/bloc/signup_bloc.dart';
-import 'package:incident_reporter/model/signup_state.dart';
-import 'package:incident_reporter/repo/auth_repo.dart';
+import 'package:incident_reporter/bloc/register/register_bloc.dart';
+import 'package:incident_reporter/repo/user_repo.dart';
+import 'package:incident_reporter/screens/login_page.dart';
+import 'package:incident_reporter/widgets/signup_form.dart';
 
 class SignUp extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
+  final UserRepository _userRepository;
+
+  const SignUp({Key? key, required UserRepository userRepository})
+      : _userRepository = userRepository,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: BlocProvider(
-        create: (context) => SignUpBloc(
-          authRepo: context.read<AuthRepository>(),
-          authCubit: context.read<AuthCubit>(),
-        ),
+      resizeToAvoidBottomInset: false,
+      body: BlocProvider<RegisterBloc>(
+        create: (context) => RegisterBloc(userRepository: _userRepository),
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            _signUpForm(),
+            Container(
+              child: SignupForm(
+                userRepository: _userRepository,
+              ),
+              margin: EdgeInsets.only(top: height * 0.5),
+            ),
+            SizedBox(
+              height: height * 0.1,
+            ),
             _showLoginButton(context),
           ],
         ),
@@ -29,105 +38,16 @@ class SignUp extends StatelessWidget {
     );
   }
 
-  Widget _signUpForm() {
-    return BlocListener<SignUpBloc, SignUpState>(
-        listener: (context, state) {
-          final formStatus = state.formStatus;
-          if (formStatus is SubmissionFailed) {
-            _showSnackBar(context, formStatus.exception.toString());
-          }
-        },
-        child: Form(
-          key: _formKey,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 40),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _usernameField(),
-                _emailField(),
-                _passwordField(),
-                _signUpButton(),
-              ],
-            ),
-          ),
-        ));
-  }
-
-  Widget _usernameField() {
-    return BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
-      return TextFormField(
-        decoration: InputDecoration(
-          icon: Icon(Icons.person),
-          hintText: 'Username',
-        ),
-        validator: (value) =>
-            state.isValidUsername ? null : 'Username is too short',
-        onChanged: (value) => context.read<SignUpBloc>().add(
-              SignUpUsernameChanged(username: value),
-            ),
-      );
-    });
-  }
-
-  Widget _emailField() {
-    return BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
-      return TextFormField(
-        decoration: InputDecoration(
-          icon: Icon(Icons.person),
-          hintText: 'Email',
-        ),
-        validator: (value) => state.isValidUsername ? null : 'Invalid email',
-        onChanged: (value) => context.read<SignUpBloc>().add(
-              SignUpEmailChanged(email: value),
-            ),
-      );
-    });
-  }
-
-  Widget _passwordField() {
-    return BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
-      return TextFormField(
-        obscureText: true,
-        decoration: InputDecoration(
-          icon: Icon(Icons.security),
-          hintText: 'Password',
-        ),
-        validator: (value) =>
-            state.isValidPassword ? null : 'Password is too short',
-        onChanged: (value) => context.read<SignUpBloc>().add(
-              SignUpPasswordChanged(password: value),
-            ),
-      );
-    });
-  }
-
-  Widget _signUpButton() {
-    return BlocBuilder<SignUpBloc, SignUpState>(builder: (context, state) {
-      return state.formStatus is FormSubmitting
-          ? CircularProgressIndicator()
-          : ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  context.read<SignUpBloc>().add(SignUpSubmitted());
-                }
-              },
-              child: Text('Sign Up'),
-            );
-    });
-  }
-
   Widget _showLoginButton(BuildContext context) {
-    return SafeArea(
-      child: TextButton(
+    return TextButton(
         child: Text('Already have an account? Sign in.'),
-        onPressed: () => context.read<AuthCubit>().showLogin(),
-      ),
-    );
-  }
-
-  void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) {
+                return Login(
+                  userRepository: _userRepository,
+                );
+              }),
+            ));
   }
 }
