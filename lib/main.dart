@@ -39,18 +39,19 @@ class MyApp extends StatelessWidget {
                 userRepository: _userRepository,
               );
             }
-            print(state);
             if (state is AuthenticationSuccess) {
-              return Home(user: state.firebaseUser);
+              return Home();
+              //Home(user: state.firebaseUser);
             }
 
-            return Scaffold(
-              body: Center(
-                child: Container(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-            );
+            return Home();
+            // Scaffold(
+            //   body: Center(
+            //     child: Container(
+            //       child: CircularProgressIndicator(),
+            //     ),
+            //   ),
+            // );
           },
         ));
   }

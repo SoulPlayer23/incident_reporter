@@ -27,6 +27,8 @@ dependencies:
   firebase_auth:
   firebase_core:
   equatable:
+  sqflite:
+  path_provider:
 
 
 
