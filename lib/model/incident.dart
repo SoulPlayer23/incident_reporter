@@ -1,13 +1,9 @@
-import 'dart:typed_data';
-
-import 'package:flutter/cupertino.dart';
-
 class Incident {
   int id;
   String itype;
-  DateTime dateTime;
+  String dateTime;
   String desc;
-  Uint8List iimage;
+  String iimage;
 
   Incident({
     required this.id,

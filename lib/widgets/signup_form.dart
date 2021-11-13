@@ -5,14 +5,10 @@ import 'package:incident_reporter/bloc/auth/auth_event.dart';
 import 'package:incident_reporter/bloc/register/register_bloc.dart';
 import 'package:incident_reporter/bloc/register/register_event.dart';
 import 'package:incident_reporter/bloc/register/register_state.dart';
-import 'package:incident_reporter/repo/user_repo.dart';
 
 class SignupForm extends StatefulWidget {
-  final UserRepository _userRepository;
+  const SignupForm({Key? key}) : super(key: key);
 
-  const SignupForm({Key? key, required UserRepository userRepository})
-      : _userRepository = userRepository,
-        super(key: key);
   @override
   State<SignupForm> createState() => _SignupFormState();
 }

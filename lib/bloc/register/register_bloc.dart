@@ -6,11 +6,7 @@ import 'register_event.dart';
 import 'register_state.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  final UserRepository _userRepository;
-
-  RegisterBloc({required UserRepository userRepository})
-      : _userRepository = userRepository,
-        super(RegisterState.initial());
+  RegisterBloc() : super(RegisterState.initial());
 
   @override
   Stream<RegisterState> mapEventtoState(RegisterEvent event) async* {
@@ -37,7 +33,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       {required String email, required String password}) async* {
     yield RegisterState.loading();
     try {
-      await _userRepository.signInWithCredentials(email, password);
+      await UserRepository().signInWithCredentials(email, password);
       yield RegisterState.success();
     } catch (_) {
       yield RegisterState.failure();

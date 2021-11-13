@@ -5,10 +5,15 @@ import 'package:incident_reporter/repo/user_repo.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final UserRepository _userRepository;
-  AuthenticationBloc({required UserRepository userRepository})
-      : _userRepository = userRepository,
-        super(AuthenticationInitial());
+  final UserRepository userRepository;
+  AuthenticationBloc({required this.userRepository})
+      : super(AuthenticationInitial()) {
+    init();
+  }
+
+  Future<void> init() async {
+    this.add(AuthenticationStarted());
+  }
 
   @override
   Stream<AuthenticationState> mapEventtoState(
@@ -25,19 +30,19 @@ class AuthenticationBloc
   //Authentication Logged Out
   Stream<AuthenticationState> _mapAuthenticationLoggedOutToState() async* {
     yield AuthenticationFailure();
-    _userRepository.signOut();
+    userRepository.signOut();
   }
 
   //Authentication Logged In
   Stream<AuthenticationState> _mapAuthenticationLoggedInToState() async* {
-    yield AuthenticationSuccess((await _userRepository.getUser())!);
+    yield AuthenticationSuccess((await userRepository.getUser())!);
   }
 
   //Authentication Started
   Stream<AuthenticationState> _mapAuthenticationStartedToState() async* {
-    final isSignedIn = await _userRepository.isSignedIn();
+    final isSignedIn = await userRepository.isSignedIn();
     if (isSignedIn) {
-      final firebaseUser = await _userRepository.getUser();
+      final firebaseUser = await userRepository.getUser();
       yield AuthenticationSuccess(firebaseUser!);
     } else {
       yield AuthenticationFailure();

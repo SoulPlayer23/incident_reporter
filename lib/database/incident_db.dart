@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:incident_reporter/model/incident.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';

@@ -6,11 +6,7 @@ import 'login_event.dart';
 import 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final UserRepository _userRepository;
-
-  LoginBloc({required UserRepository userRepository})
-      : _userRepository = userRepository,
-        super(LoginState.initial());
+  LoginBloc() : super(LoginState.initial());
 
   @override
   Stream<LoginState> mapEventtoState(LoginEvent event) async* {
@@ -36,7 +32,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       {required String email, required String password}) async* {
     yield LoginState.loading();
     try {
-      await _userRepository.signInWithCredentials(email, password);
+      await UserRepository().signInWithCredentials(email, password);
       yield LoginState.success();
     } catch (_) {
       yield LoginState.failure();

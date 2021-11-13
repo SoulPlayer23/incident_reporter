@@ -8,11 +8,9 @@ import 'package:incident_reporter/bloc/login/login_state.dart';
 import 'package:incident_reporter/repo/user_repo.dart';
 
 class LoginForm extends StatefulWidget {
-  final UserRepository _userRepository;
-
-  const LoginForm({Key? key, required UserRepository userRepository})
-      : _userRepository = userRepository,
-        super(
+  LoginForm({
+    Key? key,
+  }) : super(
           key: key,
         );
 

@@ -7,10 +7,10 @@ class IncidentDao {
   final dbProvider = DatabaseProvider.dbProvider;
 
   //Adds new incident records
-  Future<int> createIncident(Incident incident) async {
-    final db = await dbProvider.database;
-    var result = db.insert(incidentTABLE, incident.toDatabaseJson());
-    return result;
+  Future<Incident> createIncident(Incident incident) async {
+    var db = await dbProvider.database;
+    incident.id = db.insert(incidentTABLE, incident.toDatabaseJson()) as int;
+    return incident;
   }
 
   //Get All incident items

@@ -29,6 +29,10 @@ dependencies:
   equatable:
   sqflite:
   path_provider:
+  date_time_picker:
+  intl:
+  image_picker:
+  shared_preferences:
 
 
 

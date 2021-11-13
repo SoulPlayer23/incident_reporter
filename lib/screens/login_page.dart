@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:incident_reporter/bloc/login/login_bloc.dart';
-import 'package:incident_reporter/repo/user_repo.dart';
 import 'package:incident_reporter/screens/signup_page.dart';
 import 'package:incident_reporter/widgets/login_form.dart';
 
 class Login extends StatelessWidget {
-  final UserRepository _userRepository;
-
-  const Login({Key? key, required UserRepository userRepository})
-      : _userRepository = userRepository,
-        super(key: key);
+  static const route = "/login";
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +13,12 @@ class Login extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: BlocProvider<LoginBloc>(
-        create: (context) => LoginBloc(userRepository: _userRepository),
+        create: (context) => LoginBloc(),
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
             Container(
-              child: LoginForm(
-                userRepository: _userRepository,
-              ),
+              child: LoginForm(),
               margin: EdgeInsets.only(top: height * 0.5),
             ),
             SizedBox(
@@ -40,13 +33,8 @@ class Login extends StatelessWidget {
 
   Widget _signupButton(BuildContext context) {
     return TextButton(
-        onPressed: () => {
-              Navigator.push(context, MaterialPageRoute(builder: (_) {
-                return SignUp(
-                  userRepository: _userRepository,
-                );
-              }))
-            },
+        onPressed: () =>
+            {Navigator.pushReplacementNamed(context, SignUp.route)},
         child: Text('Don\'t have an account? Sign up'));
   }
 }
