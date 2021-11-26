@@ -8,7 +8,13 @@ class AuthenticationBloc
   final UserRepository userRepository;
   AuthenticationBloc({required this.userRepository})
       : super(AuthenticationInitial()) {
-    init();
+    // init();
+    // on<AuthenticationStarted>((event, emit) =>
+    //     emit(_mapAuthenticationStartedToState() as AuthenticationState));
+    // on<AuthenticationLoggedIn>((event, emit) =>
+    //     emit(_mapAuthenticationLoggedInToState() as AuthenticationState));
+    // on<AuthenticationLoggedOut>((event, emit) =>
+    //     emit(_mapAuthenticationLoggedOutToState() as AuthenticationState));
   }
 
   Future<void> init() async {
@@ -29,8 +35,8 @@ class AuthenticationBloc
 
   //Authentication Logged Out
   Stream<AuthenticationState> _mapAuthenticationLoggedOutToState() async* {
-    yield AuthenticationFailure();
-    userRepository.signOut();
+    yield AuthenticationFailure('Authentication Failure');
+    await userRepository.signOut();
   }
 
   //Authentication Logged In
@@ -45,7 +51,7 @@ class AuthenticationBloc
       final firebaseUser = await userRepository.getUser();
       yield AuthenticationSuccess(firebaseUser!);
     } else {
-      yield AuthenticationFailure();
+      yield AuthenticationFailure('Authentication Failure');
     }
   }
 }

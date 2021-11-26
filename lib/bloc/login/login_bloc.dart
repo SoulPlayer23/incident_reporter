@@ -7,7 +7,6 @@ import 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginState.initial());
-
   @override
   Stream<LoginState> mapEventtoState(LoginEvent event) async* {
     if (event is LoginEmailChange) {

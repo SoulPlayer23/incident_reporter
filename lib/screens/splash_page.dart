@@ -19,26 +19,13 @@ class _SplashState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (context, state) {
-        if (state is AuthenticationFailure) {
-          _navigateToLogin(context);
-        }
         if (state is AuthenticationSuccess) {
           _navigateToHome(context, user: state.firebaseUser);
         }
 
-        return Scaffold(
-          body: Center(
-            child: Container(
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        );
+        return Login();
       },
     );
-  }
-
-  void _navigateToLogin(BuildContext context) {
-    Navigator.pushReplacementNamed(context, Login.route);
   }
 
   void _navigateToHome(BuildContext context, {required User user}) {

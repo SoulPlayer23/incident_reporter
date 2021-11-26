@@ -6,7 +6,15 @@ import 'register_event.dart';
 import 'register_state.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  RegisterBloc() : super(RegisterState.initial());
+  RegisterBloc() : super(RegisterState.initial()) {
+    // on<RegisterEmailChange>((event, emit) =>
+    //     emit(_mapRegisterEmailChangeToState(event.email) as RegisterState));
+    // on<RegisterPasswordChange>((event, emit) => emit(
+    //     _mapRegisterPasswordChangeToState(event.password) as RegisterState));
+    // on<RegisterSubmitted>((event, emit) => emit(
+    //     _mapRegisterWithCredentialsPressedToState(
+    //         email: event.email, password: event.password) as RegisterState));
+  }
 
   @override
   Stream<RegisterState> mapEventtoState(RegisterEvent event) async* {

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:incident_reporter/bloc/auth/auth_bloc.dart';
@@ -5,6 +6,7 @@ import 'package:incident_reporter/bloc/auth/auth_event.dart';
 import 'package:incident_reporter/bloc/register/register_bloc.dart';
 import 'package:incident_reporter/bloc/register/register_event.dart';
 import 'package:incident_reporter/bloc/register/register_state.dart';
+import 'package:incident_reporter/repo/user_repo.dart';
 
 class SignupForm extends StatefulWidget {
   const SignupForm({Key? key}) : super(key: key);
@@ -14,6 +16,7 @@ class SignupForm extends StatefulWidget {
 }
 
 class _SignupFormState extends State<SignupForm> {
+  late UserRepository userRepository;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -41,9 +44,8 @@ class _SignupFormState extends State<SignupForm> {
         if (state.isFailure) {}
         if (state.isSubmitting) {}
         if (state.isSuccess) {
-          BlocProvider.of<AuthenticationBloc>(context).add(
-            AuthenticationLoggedIn(),
-          );
+          BlocProvider.of<AuthenticationBloc>(context)
+              .add(AuthenticationLoggedIn());
           Navigator.pop(context);
         }
       },
